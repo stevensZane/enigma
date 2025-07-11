@@ -1,0 +1,19 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment folder
+venv/
+
+# Environment variables file
+.env
+
+# Optional: config.py (if you ever stored secrets there)
+config.py
+
+# VSCode settings (if using VSCode)
+.vscode/
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
