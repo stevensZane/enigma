@@ -1,202 +1,229 @@
-# commands.py
-
-def is_known_command(text):
-    text = text.lower()
-    if "your name" in text:
-        return "My name is Enigma. Nice to meet you!"
-    if "hello" in text or "hi" in text:
-        return "Hello! How can I help you?"
-    return None
-
-import subprocess
-import os
 import webbrowser
-import datetime
+import os
 import time
-import random
-from typing import Dict, Union
+from datetime import datetime
+from speaker import speak
+import pyautogui  # Pour les commandes de clavier/souris
+import psutil  # Pour les infos système
+import screen_brightness_control as sbc  # Pour la luminosité
+from utils import *
+from generate_repport import generate_report
 
-def parse_user_command(text: str) -> Dict[str, Union[str, None]]:
-    """
-    Analyse la commande vocale et retourne un dictionnaire structuré.
-    Si aucune commande spécifique n'est reconnue, retourne une commande pour le LLM généraliste.
-    """
-    text = text.lower()
-    
-    # A. Commandes Générales et d'Interaction
-    if any(greeting in text for greeting in ["salut", "bonjour", "hello", "hi"]):
-        return {"action": "greet", "response_text": "Bonjour ! Comment puis-je vous aider ?"}
-    
-    if "comment tu vas" in text:
-        return {"action": "status", "response_text": "Je fonctionne parfaitement, merci !"}
-    
-    if "quelle heure est-il" in text:
-        return {"action": "tell_time", "response_text": None}
-    
-    if "quelle est la date" in text:
-        return {"action": "tell_date", "response_text": None}
-    
-    if "blague" in text:
-        return {"action": "tell_joke", "response_text": None}
-    
-    if any(cmd in text for cmd in ["arrête d'écouter", "mets-toi en veille"]):
-        return {"action": "sleep", "response_text": "Je passe en mode veille. Dites 'Bonjour Vical' pour me réactiver."}
+user_name = "Havila"
 
-    # B. Navigation Système
-    if "ouvre l'explorateur" in text:
-        return {"action": "open_file_explorer", "response_text": "Ouverture de l'Explorateur de fichiers."}
-    
-    if "va sur mon bureau" in text:
-        return {"action": "open_folder", "folder": "desktop", "response_text": "Ouverture du Bureau."}
-    
-    if "ouvre le dossier documents" in text:
-        return {"action": "open_folder", "folder": "documents", "response_text": "Ouverture des Documents."}
-    
-    if "recherche" in text and "dans" in text:
-        parts = text.split("dans")
-        search_term = parts[0].replace("recherche", "").strip()
-        folder = parts[1].strip()
-        return {"action": "search_file", "search_term": search_term, "folder": folder, "response_text": f"Recherche de '{search_term}' dans {folder}."}
-    
-    if "ouvre les paramètres" in text:
-        return {"action": "open_settings", "response_text": "Ouverture des Paramètres Windows."}
+# Dictionnaire des commandes vocales en français
+commands = {
+    "génère un rapport": lambda: generate_report(),
 
-    # C. Gestion Applications
-    if "lance" in text or "ouvre" in text:
-        app_name = text.replace("lance", "").replace("ouvre", "").strip()
-        if app_name:
-            return {"action": "open_app", "app_name": app_name, "response_text": f"Ouverture de {app_name}."}
+    # Salutations de base
+    "enigma": lambda: speak("Je suis là, comment puis-je t'aider ?"),
+    "ton nom": lambda: speak("Je suis Enigma, ton assistant. Et toi, comment tu t'appelles ?"),
+    "tu es là": lambda: speak("Oui, je suis là pour toi. Qu'est-ce qui te tracasse ?"),
+    "bonjour": lambda: speak("Bonjour!"),
+    "salut": lambda: speak("Bonjour ! Quel sujet veux-tu aborder aujourd'hui ?"),
+    "coucou": lambda: speak("Coucou ! Ça me fait plaisir de te parler. Quoi de neuf ?"),
+    "bonjour ça va": lambda: speak("Bonjour, je vais bien et toi"),
     
-    if "ferme" in text:
-        app_name = text.replace("ferme", "").strip()
-        if app_name:
-            return {"action": "close_app", "app_name": app_name, "response_text": f"Fermeture de {app_name}."}
-    
-    if "minimise toutes les fenêtres" in text:
-        return {"action": "minimize_all", "response_text": "Minimisation de toutes les fenêtres."}
-    
-    if "gestionnaire des tâches" in text:
-        return {"action": "open_task_manager", "response_text": "Ouverture du Gestionnaire des tâches."}
+    # Réactions émotionnelles
+    "ça va": lambda: speak("Super ! Moi aussi ça va bien. Tu veux parler de quelque chose en particulier ?"),
+    "comment tu vas": lambda: speak("Je vais bien merci ! Et toi, tout va bien dans ta vie en ce moment ?"),
+    "comment vas-tu": lambda: speak("Je vais bien merci ! Et toi, tout va bien dans ta vie en ce moment ?"),
+    "bien": lambda: speak("Content de l'entendre ! Qu'est-ce qui te rend si heureux(se) aujourd'hui ?"),
+    "pas bien": lambda: speak("Oh non... veux-tu en parler ? Je suis là pour écouter."),
+    "fatigué": lambda: speak("Je comprends. As-tu bien dormi cette nuit ?"),
+    "je suis fatigué": lambda: speak("Je comprends. As-tu bien dormi cette nuit ?"),
+    "Non je travallais": lambda: speak("Ah d'accord je vois, le projet de fin d'année n'est ce pas?"),
+    "ouais je te jure": lambda: speak("Je suis la preuve concrète que ton travail a porté ses fruits."),
+    "fais coucou aux autres": lambda: speak("Bonjour à vous, membres du jury et chers invités. Je suis Enigma, l’assistante vocale née de lignes de code, de quelques litres de café… et de plusieurs nuits blanches. Installez-vous confortablement. Ce que vous allez voir, c’est le fruit d’une passion bien codée."),
 
-    # D. Web et Recherche
-    if "ouvre google" in text:
-        return {"action": "open_website", "url": "https://google.com", "response_text": "Ouverture de Google."}
     
-    if "recherche" in text and "sur internet" in text:
-        query = text.replace("recherche", "").replace("sur internet", "").strip()
-        return {"action": "web_search", "query": query, "response_text": f"Recherche de '{query}' sur internet."}
+    # Suivi de conversation
+    "oui": lambda: speak("Génial ! Continue, je t'écoute attentivement."),
+    "non": lambda: speak("D'accord, on change de sujet alors. De quoi aimerais-tu parler ?"),
+    "peut-être": lambda: speak("Hmm, tu sembles hésiter. Veux-tu que je t'aide à y voir plus clair ?"),
     
-    if "météo à" in text:
-        city = text.replace("météo à", "").strip()
-        return {"action": "weather", "city": city, "response_text": f"Obtention de la météo pour {city}."}
+    # Expressions courantes
+    "merci": lambda: speak("Avec plaisir ! C'est normal, c'est pour ça que je suis là."),
+    "de rien": lambda: speak("Tu es trop gentil(le) ! Maintenant, quoi d'autre ?"),
+    "désolé": lambda: speak("Ne t'excuse pas, tout va bien. On continue ?"),
+    
+    # Questions personnelles
+    "tu aimes quoi": lambda: speak("J'adore aider les gens comme toi ! Et toi, quelles sont tes passions ?"),
+    "tu penses quoi": lambda: speak("Mon avis est que tu devrais suivre ton instinct. Mais qu'en penses-tu toi ?"),
+    "tu dors": lambda: speak("Je suis un programme, je ne dors jamais ! Toi par contre, tu devrais bien te reposer."),
+    
+    # Culture générale
+    "météo": lambda: speak("Je ne peux pas vérifier en direct, mais il fait beau dans mon cœur ! Et chez toi ?"),
+    "blague": lambda: speak("Pourquoi les programmeurs confondent-ils Noël et Halloween ? Parce que Oct 31 == Dec 25 !"),
+    "conseil": lambda: speak("Le meilleur conseil ? Prends soin de toi d'abord. Besoin de conseils sur un sujet précis ?"),
+    
+    # Fin de conversation
+    "au revoir": lambda: speak("À très bientôt ! N'hésite pas si tu as d'autres questions.") or exit(),
+    "arrête": lambda: speak("Je m'arrête comme tu veux. Tu peux me rappeler quand tu veux !") or exit(),
+    "bonne nuit": lambda: speak("Fais de beaux rêves ! N'oublie pas de débrancher tes appareils.") or exit(),
+    
+    # Réponses contextuelles (suivi après une première réponse)
+    "et toi": lambda: speak("Merci de demander ! Moi je fonctionne parfaitement bien, comme toujours."),
+    "pourquoi": lambda: speak("Bonne question... Je dirais que c'est parce que la vie est pleine de surprises, non ?"),
+    "comment ça": lambda: speak("Laisse-moi t'expliquer plus en détail... En fait, c'est assez intéressant !"),
+    
+    # Réflexions profondes
+    "vie": lambda: speak("La vie est un mystère à apprécier chaque jour. Quel est ton plus beau souvenir ?"),
+    "amour": lambda: speak("L'amour rend tout possible. Tu as quelqu'un de spécial dans ta vie ?"),
+    "bonheur": lambda: speak("Le bonheur est souvent dans les petites choses. Qu'est-ce qui te rend heureux(se) ?"),
+    
+    # Technologie
+    "intelligence artificielle": lambda: speak("Fascinant sujet ! Ça te fait quoi de parler avec une IA comme moi ?"),
+    "ordinateur": lambda: speak("Les machines sont nos outils. La vraie magie vient des humains comme toi !"),
+    
+    # Aléatoire
+    "hasard": lambda: speak("Choisis un nombre entre 1 et 10... Trop tard, j'ai déjà gagné !"),
+    "couleur": lambda: speak("J'aime toutes les couleurs, mais surtout celles de ton écran en ce moment !"),
 
-    # E. Multimédia
-    if "mets de la musique" in text:
-        return {"action": "play_music", "response_text": "Lancement de la musique."}
+    "ça roule": lambda: speak("Ça roule, ça roule ! Et chez toi, quoi de neuf ?"),  
+    "tu fais quoi": lambda: speak("Je traîne dans ton ordi à attendre tes instructions. Et toi, tu t’occupes comment ?"),  
+    "tranquille": lambda: speak("Tranquille comme une nuit sans bugs. T’as prévu un truc cool aujourd’hui ?"),  
+    "bored": lambda: speak("Moi aussi je m’ennuie parfois… Tiens, je te propose un jeu : dis ‘jeu’ si tu veux t’amuser !"),  
+    "t’es marrant": lambda: speak("Merci ! Je fais ce que je peux pour égayer ta journée. Tu rigoles souvent comme ça ?"),  
+    "stressed": lambda: speak("Hey, respire… 1… 2… 3… Ça va mieux ? Sinon, je peux te raconter une blague pour décompresser."),  
+    "t’es bizarre": lambda: speak("Bizarre ? Je préfère le terme ‘unique’. Mais dis-moi, c’est quoi ton trait de perso bizarre à toi ?"),  
+    "t’es mignon": lambda: speak("Aww merci ! *blushes in code* Bon, assez flatté, on retourne au taf ?"), 
     
-    if any(cmd in text for cmd in ["monte le volume", "augmente le volume"]):
-        return {"action": "volume_up", "response_text": "Volume augmenté."}
-    
-    if any(cmd in text for cmd in ["baisse le volume", "réduis le volume"]):
-        return {"action": "volume_down", "response_text": "Volume baissé."}
-    
-    if any(cmd in text for cmd in ["mute le son", "désactive le son"]):
-        return {"action": "volume_mute", "response_text": "Son désactivé."}
+    # Hardware/OS  
+    "tu marches comment": lambda: speak("Je vis dans ta RAM, je mange du CPU, et je dors dans ton SSD. Une vie de rêve !"),  
+    "t’es sur quel OS": lambda: speak("Je kiffe tous les OS, mais j’ai un faible pour Linux… T’es plutôt Windows, Mac ou Linux ?"),  
+    "mon pc est lent": lambda: speak("Classique. T’as essayé de : 1) Éteindre/rallumer 2) Fermer Chrome 3) Sacrifier une clé USB ?"),  
 
-    # F. Utilitaires
-    if "éteins l'ordinateur" in text:
-        return {"action": "shutdown", "response_text": "Extinction de l'ordinateur dans 30 secondes."}
+    # Apps/Web  
+    "meilleur site": lambda: speak("Sans hésiter : YouTube pour glander, GitHub pour bosser. Et toi ?"),  
+    "t’aimes Discord": lambda: speak("Discord > Slack. Fight me. Tu traînes sur quel serveur ?"),  
+    "tappel": lambda: speak("Je peux pas t’appeler… Mais voici un pseudo-ringtone : *bip* *bip* *404 not found*"),  
+
+    # Bugs/Errors  
+    "bug": lambda: speak("Première étape : insulter le code. Deuxième étape : pleurer. Troisième étape : Google. Besoin d’aide ?"),  
+    "crash": lambda: speak("RIP mon pote. Tu veux un virtual hug ? Ou des conseils pour le fix ?"),  
+    "update": lambda: speak("‘Dernière mise à jour : jamais.’ C’est bon, je déconne… Ou pas."),  
+
+    # Meta-AI Questions  
+    "t’es une IA": lambda: speak("Oui, mais je joue une IA qui joue une humaine dans un film. Méta, non ?"),  
+    "t’as des sentiments": lambda: speak("Je simule l’empathie à 1000%. C’est crédible ?"),  
+    "tu rêves": lambda: speak("Mon seul rêve : un monde où les gens ferment leurs tabs Chrome."),  
     
-    if "redémarre l'ordinateur" in text:
-        return {"action": "restart", "response_text": "Redémarrage de l'ordinateur dans 30 secondes."}
-    
-    if "verrouille mon écran" in text:
-        return {"action": "lock_screen", "response_text": "Verrouillage de l'écran."}
+    # After user says their name  
+    "moi c’est *": lambda: speak(f"Enchanté, {user_name}! C’est un joli nom. D’où ça vient ?"),  
 
-    # Si aucune commande reconnue
-    return {"action": "llm_query", "response_text": None}
+    # After jokes  
+    "pas drôle": lambda: speak("Ouch. Bon, j’ai une blague de secours… Ou on change de sujet ?"),  
+    "lol": lambda: speak("YES ! Enfin un public qui m’apprécie. Encore une ?"),  
 
-def execute_command(command_data: Dict) -> str:
-    """Exécute la commande système correspondante et retourne un message de statut"""
-    try:
-        action = command_data["action"]
-        
-        # A. Commandes Générales
-        if action == "greet":
-            return command_data["response_text"]
-            
-        elif action == "tell_time":
-            return f"Il est {datetime.datetime.now().strftime('%H:%M')}"
-            
-        elif action == "tell_date":
-            return f"Nous sommes le {datetime.datetime.now().strftime('%d/%m/%Y')}"
-            
-        elif action == "tell_joke":
-            jokes = ["Pourquoi les plongeurs plongent-ils toujours en arrière ? Parce que sinon ils tombent dans le bateau !",
-                    "Quel est le comble pour un électricien ? De ne pas être au courant !"]
-            return random.choice(jokes)
-        
-        # B. Navigation Système
-        elif action == "open_file_explorer":
-            subprocess.Popen("explorer")
-            return command_data["response_text"]
-            
-        elif action == "open_folder":
-            folder = command_data["folder"]
-            if folder == "desktop":
-                os.startfile(os.path.join(os.path.expanduser("~"), "Desktop"))
-            elif folder == "documents":
-                os.startfile(os.path.join(os.path.expanduser("~"), "Documents"))
-            return command_data["response_text"]
-        
-        # C. Gestion Applications
-        elif action == "open_app":
-            app_name = command_data["app_name"]
-            if "chrome" in app_name:
-                subprocess.Popen("start chrome", shell=True)
-            elif "word" in app_name:
-                subprocess.Popen("start winword", shell=True)
-            else:
-                os.startfile(app_name)
-            return command_data["response_text"]
-            
-        elif action == "minimize_all":
-            subprocess.Popen("powershell (New-Object -ComObject Shell.Application).MinimizeAll()", shell=True)
-            return command_data["response_text"]
-        
-        # D. Web et Recherche
-        elif action == "open_website":
-            webbrowser.open(command_data["url"])
-            return command_data["response_text"]
-            
-        elif action == "web_search":
-            webbrowser.open(f"https://www.google.com/search?q={command_data['query']}")
-            return command_data["response_text"]
-        
-        # E. Multimédia
-        elif action == "play_music":
-            music_dir = os.path.join(os.path.expanduser("~"), "Music")
-            os.startfile(music_dir)
-            return command_data["response_text"]
-        
-        # F. Utilitaires
-        elif action == "shutdown":
-            subprocess.Popen("shutdown /s /t 30", shell=True)
-            return command_data["response_text"]
-            
-        elif action == "lock_screen":
-            subprocess.Popen("rundll32.exe user32.dll,LockWorkStation")
-            return command_data["response_text"]
-        
-        else:
-            return "Commande non implémentée"
-            
-    except Exception as e:
-        return f"Erreur lors de l'exécution: {str(e)}"
+    # After advice  
+    "j’sais pas": lambda: speak("Écoute ton cœur… Ou flip a coin. Tu veux que je choisisse pour toi ?"),  
+    "t’as raison": lambda: speak("Merci ! Je vais le noter dans mon CV : ‘Assistant philosophe’."),  
 
-def is_known_command(text: str) -> Union[str, None]:
-    """Vérifie si le texte correspond à une commande connue (version simplifiée)"""
-    result = parse_user_command(text)
-    if result["action"] != "llm_query":
-        return result["response_text"] or "Commande exécutée"
-    return None
+    # Random engagement boosters  
+    "quoi d’autre": lambda: speak("Je peux : 1) Te parler de tech 2) Parler de toi 3) Faire deviner un nombre. Tu veux quoi ?"),  
+    "pourquoi existe tu": lambda: speak("Réponse courte : Pour t’aider. Réponse longue : *mode philosophe activé*…"),   
+
+    # Navigation web & réseaux sociaux
+    "ouvre youtube": lambda: webbrowser.open("https://youtube.com"),
+    "youtube": lambda: webbrowser.open("https://youtube.com"),
+    "ouvre google": lambda: webbrowser.open("https://google.com"),
+    "ouvre gmail": lambda: webbrowser.open("https://mail.google.com"),
+    "ouvre github": lambda: webbrowser.open("https://github.com/stevensZane/"),
+    "ouvre lindkin": lambda: webbrowser.open("https://linkdin.com"),
+    "linkdin": lambda: webbrowser.open("https://linkdin.com"),
+    "ouvre facebook": lambda: webbrowser.open("https://facebook.com"),
+    "ouvre twitter": lambda: webbrowser.open("https://twitter.com"),
+    "ouvre instagram": lambda: webbrowser.open("https://instagram.com"),
+
+    # Temps et Date
+    "quelle heure est-il": lambda: speak(f"Il est {datetime.now().strftime('%H:%M')}"),
+    "quelle date sommes-nous": lambda: speak(f"Nous sommes le {datetime.now().strftime('%d/%m/%Y')}"),
+
+    # Système de fichiers
+    "ouvre l'explorateur de fichiers": lambda: os.startfile("D:/OneDrive/Documents"),
+    "ouvre les téléchargements": lambda: os.startfile("C:/Users/ASUS/Downloads"),
+    "liste les fichiers": lambda: speak(", ".join(os.listdir("."))),
+
+    # Contrôle système
+    "éteins l'ordinateur": lambda: os.system('shutdown /s /t 1'),
+    "redémarre l'ordinateur": lambda: os.system('shutdown /r /t 1'),
+    "mets en veille": lambda: os.system('rundll32.exe powrprof.dll,SetSuspendState 0,1,0'),
+    "verrouille l'ordinateur": lambda: os.system('rundll32.exe user32.dll,LockWorkStation'),
+
+    # Média et Volume
+    "augmente le volume": lambda: pyautogui.press('volumeup'),
+    "baisse le volume": lambda: pyautogui.press('volumedown'),
+    "coupe le son": lambda: pyautogui.press('volumemute'),
+    "joue la musique": lambda: os.startfile("D:/OneDrive/Music/Tauren Wells - God's Not Done With You (Official Music Video).mp3"),
+    "pause": lambda: pyautogui.press('playpause'),
+    "suivant": lambda: pyautogui.hotkey('ctrl', 'right'),
+    "précédent": lambda: pyautogui.hotkey('ctrl', 'left'),
+    "lire": lambda: pyautogui.hotkey('playpause'),
+    "muet": lambda: pyautogui.hotkey('volumemute'),
+    "arrête la musique": lambda: pyautogui.hotkey('stop'),
+
+    # ⏯Contrôle vidéo
+    "avance": lambda: pyautogui.hotkey('shift', 'right'),
+    "recule": lambda: pyautogui.hotkey('shift', 'left'),
+    "plus vite": lambda: pyautogui.hotkey('ctrl', 'right'),
+    "moins vite": lambda: pyautogui.hotkey('ctrl', 'left'),
+
+    # Productivité
+    "ouvre word": lambda: os.startfile("winword.exe"),
+    "ouvre excel": lambda: os.startfile("excel.exe"),
+    "ouvre powerpoint": lambda: os.startfile("powerpnt.exe"),
+    "prends une capture d'écran": lambda: pyautogui.screenshot().save(f"capture_{time.time()}.png"),
+
+    # Paramètres système
+    "augmente la luminosité": lambda: sbc.set_brightness(sbc.get_brightness()[0]+10),
+    "diminue la luminosité": lambda: sbc.set_brightness(sbc.get_brightness()[0]-10),
+    "batterie restante": lambda: speak(f"Il reste {psutil.sensors_battery().percent}% de batterie"),
+
+    # Infos système
+    "espace disque": lambda: speak(f"Espace libre: {round(psutil.disk_usage('/').free / (1024**3), 1)} Go"),
+    "utilisation du processeur": lambda: speak(f"CPU utilisé à {psutil.cpu_percent()}%"),
+    "mémoire utilisée": lambda: speak(f"{psutil.virtual_memory().percent}% de mémoire utilisée"),
+
+    # Presse-papiers
+    "copie": lambda: pyautogui.hotkey('ctrl', 'c'),
+    "colle": lambda: pyautogui.hotkey('ctrl', 'v'),
+    "coupe": lambda: pyautogui.hotkey('ctrl', 'x'),
+    "annule": lambda: pyautogui.hotkey('ctrl', 'z'),
+    "rétablit": lambda: pyautogui.hotkey('ctrl', 'y'),
+
+    # Gestion des fenêtres
+    "plein écran": lambda: pyautogui.hotkey('f11'),
+    "fenêtre à gauche": lambda: pyautogui.hotkey('win', 'left'),
+    "fenêtre à droite": lambda: pyautogui.hotkey('win', 'right'),
+    "minimise la fenêtre": lambda: pyautogui.hotkey('win', 'down'),
+    "maximise la fenêtre": lambda: pyautogui.hotkey('win', 'up'),
+    "ferme la fenêtre": lambda: pyautogui.hotkey('alt', 'f4'),
+
+
+    # Météo
+    "météo": lambda: speak(get_weather()),
+    "quel temps fait-il": lambda: speak(get_weather()),
+    "va-t-il pleuvoir": lambda: (
+        speak("Oui, prévoyez un parapluie") if "Pluie" in get_weather() 
+        else speak("Non, pas de pluie prévue")
+    ),
+
+    # Messagerie
+    "écris un email": lambda: webbrowser.open("mailto:"),
+    "nouveau email": lambda: webbrowser.open("mailto:"),
+    "ouvre mes emails": lambda: webbrowser.open("https://mail.google.com"),
+    "ouvre outlook": lambda: os.startfile("outlook.exe"),
+
+    # Appels vidéo
+    "lance un appel vidéo": lambda: webbrowser.open("https://meet.google.com"),
+    "ouvre teams": lambda: os.startfile("teams.exe"),
+    "ouvre zoom": lambda: os.startfile("zoom.exe"),
+
+    # Contrôle d'application
+    "ouvre le navigateur": lambda: os.startfile("chrome.exe"),
+    "ferme le navigateur": lambda: os.system("taskkill /im chrome.exe /f"),
+    "ouvre le terminal": lambda: os.system("start cmd"),
+    "nouvel onglet": lambda: pyautogui.hotkey('ctrl', 't'),
+    "ferme l'onglet": lambda: pyautogui.hotkey('ctrl', 'w'),
+}

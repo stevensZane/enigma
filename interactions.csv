@@ -1,0 +1,93 @@
+ID_Testeur,Date_Test,Scénario_ID,Commande_Proferée,Tache_Accomplie,Tps_Execution_Sec,Sortie_Assistant,Difficulte_Score_1_5
+T_3CC3D7A3,2025-07-24 15:28:45,S_20250724_152836,bonjour,True,0.5673680305480957,Commande exécutée.,1
+T_3CC3D7A3,2025-07-24 15:29:06,S_20250724_152836,bonjour,True,0.4997398853302002,Commande exécutée.,1
+T_DCECF6DD,2025-07-24 15:38:47,S_20250724_153831,bonjour,True,5.92046046257019,Commande exécutée.,1
+T_DCECF6DD,2025-07-24 15:39:35,S_20250724_153831,quelle heure est-il,True,2.5662190914154053,Commande exécutée.,1
+T_B576F242,2025-07-24 15:46:18,S_20250724_154508,bonjour,True,3.301466703414917,Commande exécutée.,1
+T_67713CD9,2025-07-24 15:57:23,S_20250724_155624,bonjour,True,3.2914650440216064,Commande exécutée.,1
+T_67713CD9,2025-07-24 15:58:31,S_20250724_155624,bonjour,True,3.553413152694702,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:51:56,S_20250730_175136,bonjour,True,3.6937060356140137,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:52:09,S_20250730_175136,quelle heure est-il,True,3.2322561740875244,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:52:25,S_20250730_175136,pourcentage batter,False,0.0003654956817626953,"Commande inconnue. Pour voir les instructions disponibles, dites simplement 'aide'.",
+T_CD22E094,2025-07-30 17:52:39,S_20250730_175136,aide,False,0.00020456314086914062,"Commande inconnue. Pour voir les instructions disponibles, dites simplement 'aide'.",
+T_CD22E094,2025-07-30 17:53:02,S_20250730_175136,passe dis,False,0.00018548965454101562,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_CD22E094,2025-07-30 17:53:16,S_20250730_175136,augmente le volume,True,0.10355019569396973,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:53:50,S_20250730_175136,tu es là,True,1.601210117340088,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:54:07,S_20250730_175136,salut,True,3.277796983718872,Commande exécutée.,1
+T_CD22E094,2025-07-30 17:54:22,S_20250730_175136,comment vas-tu,False,0.0007483959197998047,Cette commande n’est pas disponible. Besoin d’aide ? Dites : 'quelles sont les commandes disponibles'.,
+T_CD22E094,2025-07-30 17:54:51,S_20250730_175136,s'il te plaît faut ajouter en fait,False,0.000171661376953125,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_584AF02E,2025-07-30 18:00:35,S_20250730_180015,bonjour,True,3.5070440769195557,Commande exécutée.,1
+T_584AF02E,2025-07-30 18:00:47,S_20250730_180015,comment tu vas,True,2.8604674339294434,Commande exécutée.,
+T_3891F766,2025-07-30 18:01:37,S_20250730_180120,bonjour,True,3.3126986026763916,Commande exécutée.,1
+T_3891F766,2025-07-30 18:01:49,S_20250730_180120,quelle heure est-il,True,2.8554482460021973,Commande exécutée.,1
+T_3891F766,2025-07-30 18:01:59,S_20250730_180120,prends une capture d'écran,True,0.42438793182373047,Commande exécutée.,3
+T_3891F766,2025-07-30 18:02:13,S_20250730_180120,espace dis,False,0.008767843246459961,Je ne suis pas sûr de comprendre. Voici quelques exemples de commandes que vous pouvez essayer.,
+T_79D929B0,2025-08-02 15:22:49,S_20250802_152218,normal,False,7.62939453125e-05,Je ne suis pas programmé pour cela. Consultez les commandes prises en charge pour continuer.,
+T_79D929B0,2025-08-02 15:23:06,S_20250802_152218,bonjour,True,3.452831506729126,Commande exécutée.,1
+T_79D929B0,2025-08-02 15:23:42,S_20250802_152218,j'ai pas pu avoir les voir mais le jour du test,False,0.00018286705017089844,Je ne suis pas sûr de comprendre. Voici quelques exemples de commandes que vous pouvez essayer.,
+T_79D929B0,2025-08-02 15:24:48,S_20250802_152218,prends une capture d'écran,True,0.33514833450317383,Commande exécutée.,3
+T_79D929B0,2025-08-02 15:25:13,S_20250802_152218,le truc ça ira la capture de la,False,0.0001850128173828125,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_79D929B0,2025-08-02 15:25:47,S_20250802_152218,est-ce que juste comme ça en fait ne pouvais pas sortir,False,9.322166442871094e-05,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_79D929B0,2025-08-02 15:26:32,S_20250802_152218,heure est-il,False,9.918212890625e-05,Hmm... cela ne me dit rien. Vous pouvez demander 'aide' pour voir mes commandes.,
+T_79D929B0,2025-08-02 15:26:50,S_20250802_152218,quelle heure est-il,True,3.5455219745635986,Commande exécutée.,1
+T_79D929B0,2025-08-02 15:27:29,S_20250802_152218,batterie restante,True,4.065439224243164,Commande exécutée.,3
+T_79D929B0,2025-08-02 15:28:01,S_20250802_152218,clairement bon les affaires de météo là,False,0.00015211105346679688,Cette commande n’est pas disponible. Besoin d’aide ? Dites : 'quelles sont les commandes disponibles'.,
+T_79D929B0,2025-08-02 15:28:19,S_20250802_152218,sortir ça aussi en,False,0.0002181529998779297,Je ne suis pas sûr de comprendre. Voici quelques exemples de commandes que vous pouvez essayer.,
+T_79D929B0,2025-08-02 15:28:32,S_20250802_152218,ouvre le navigateur,True,0.22186779975891113,Commande exécutée.,1
+T_79D929B0,2025-08-02 15:29:15,S_20250802_152218,bref c'est ça languedoc genre à chaque un cs le temps d'ex,False,0.0003876686096191406,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",
+T_7C49A270,2025-08-07 01:15:14,S_20250807_011431,bonjour,True,5.815882205963135,Commande exécutée.,1
+T_7C49A270,2025-08-07 01:15:40,S_20250807_011431,en fait tu parles donc il faut parler en fait pour que sinon ça sera pas,False,0.000133514404296875,"Désolé, je ne reconnais pas cette commande. Vous pouvez consulter les commandes disponibles.",
+T_7C49A270,2025-08-07 01:16:07,S_20250807_011431,prends une capture d'écran,True,0.33434152603149414,Commande exécutée.,3
+T_7C49A270,2025-08-07 01:16:27,S_20250807_011431,je comprends pas pourquoi ça parle pas,False,0.00019025802612304688,Je ne suis pas sûr de comprendre. Voici quelques exemples de commandes que vous pouvez essayer.,
+T_A30A2850,2025-08-07 01:17:09,S_20250807_011650,comment vas-tu,False,0.0004069805145263672,"Commande inconnue. Pour voir les instructions disponibles, dites simplement 'aide'.",
+T_A30A2850,2025-08-07 01:17:25,S_20250807_011650,comment tu vas,True,5.623281478881836,Commande exécutée.,
+T_A30A2850,2025-08-07 01:17:41,S_20250807_011650,ça va,True,6.358147859573364,Commande exécutée.,
+T_A30A2850,2025-08-07 01:17:53,S_20250807_011650,quelle heure est-il,True,2.8054332733154297,Commande exécutée.,1
+T_A30A2850,2025-08-07 01:18:08,S_20250807_011650,pourcentage batterie,False,0.000431060791015625,Je ne suis pas programmé pour cela. Consultez les commandes prises en charge pour continuer.,
+T_A30A2850,2025-08-07 01:18:28,S_20250807_011650,verrouille l'ordinateur,True,0.03582453727722168,Commande exécutée.,2
+T_A30A2850,2025-08-07 01:19:27,S_20250807_011650,pardon pardon,False,0.00010323524475097656,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_A30A2850,2025-08-07 01:20:04,S_20250807_011650,créer un email,False,0.000164031982421875,"Désolé, je ne reconnais pas cette commande. Vous pouvez consulter les commandes disponibles.",
+T_A30A2850,2025-08-07 01:20:21,S_20250807_011650,ouvre world,False,0.0001952648162841797,"Désolé, je ne reconnais pas cette commande. Vous pouvez consulter les commandes disponibles.",
+T_A30A2850,2025-08-07 01:20:45,S_20250807_011650,zoom,False,0.00014162063598632812,Cette commande n’est pas disponible. Besoin d’aide ? Dites : 'quelles sont les commandes disponibles'.,
+T_A30A2850,2025-08-07 01:21:13,S_20250807_011650,ferme fenêtre,False,0.0001556873321533203,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_A30A2850,2025-08-07 01:21:38,S_20250807_011650,ouvre le navigateur,True,0.2098393440246582,Commande exécutée.,1
+T_A30A2850,2025-08-07 01:23:10,S_20250807_011650,tu peux,False,0.000522613525390625,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",
+T_A30A2850,2025-08-07 01:23:58,S_20250807_011650,sur le papier tout va bien mais le tester,False,0.0003063678741455078,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_A30A2850,2025-08-07 01:24:11,S_20250807_011650,tu aimes quoi,True,5.528876781463623,Commande exécutée.,
+T_A30A2850,2025-08-07 01:24:26,S_20250807_011650,moi c'est avila,False,0.0001087188720703125,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_DA87F414,2025-08-07 01:28:40,S_20250807_012817,ça va,True,6.46514630317688,Commande exécutée.,
+T_DA87F414,2025-08-07 01:28:54,S_20250807_012817,oui,True,4.763755559921265,Commande exécutée.,
+T_DA87F414,2025-08-07 01:29:05,S_20250807_012817,joue la musique,True,1.4658734798431396,Commande exécutée.,2
+T_DA87F414,2025-08-07 01:29:45,S_20250807_012817,arrête la musique,True,0.10593557357788086,Commande exécutée.,1
+T_DA87F414,2025-08-07 01:30:10,S_20250807_012817,diminue le volume,False,9.894371032714844e-05,Cette instruction ne fait pas partie de mes compétences actuelles. Essayez une commande connue.,
+T_33E58742,2025-08-07 09:11:05,S_20250807_091045,bonjour,True,1.9633920192718506,Commande exécutée.,1
+T_33E58742,2025-08-07 09:11:19,S_20250807_091045,comment vas-tu,True,5.649184465408325,Commande exécutée.,
+T_33E58742,2025-08-07 09:11:40,S_20250807_091045,pas bien,True,5.2805116176605225,Commande exécutée.,
+T_33E58742,2025-08-07 09:11:53,S_20250807_091045,je suis fatigué,True,3.955832004547119,Commande exécutée.,
+T_33E58742,2025-08-07 09:12:14,S_20250807_091045,non je travaille je travaillais je travaillais,False,0.00030493736267089844,"Commande inconnue. Pour voir les instructions disponibles, dites simplement 'aide'.",
+T_33E58742,2025-08-07 09:12:30,S_20250807_091045,bref,False,0.0001881122589111328,Cette commande n’est pas disponible. Besoin d’aide ? Dites : 'quelles sont les commandes disponibles'.,
+T_33E58742,2025-08-07 09:12:39,S_20250807_091045,plein écran,True,0.10404539108276367,Commande exécutée.,1
+T_33E58742,2025-08-07 09:12:50,S_20250807_091045,fenêtre à gauche,True,0.10778999328613281,Commande exécutée.,2
+T_33E58742,2025-08-07 09:13:02,S_20250807_091045,minimise la fenêtre,True,0.10831618309020996,Commande exécutée.,1
+T_E8A621D6,2025-08-07 09:14:43,S_20250807_091428,bonjour,True,1.8751187324523926,,1
+T_E8A621D6,2025-08-07 09:14:56,S_20250807_091428,comment vas-tu,True,5.642290353775024,,
+T_E8A621D6,2025-08-07 09:15:06,S_20250807_091428,fatigué,True,4.046681880950928,,
+T_E8A621D6,2025-08-07 09:15:21,S_20250807_091428,non je travaillais,False,0.00045490264892578125,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",
+T_E8A621D6,2025-08-07 09:15:43,S_20250807_091428,non je travaillais mets,False,0.0001392364501953125,Hmm... cela ne me dit rien. Vous pouvez demander 'aide' pour voir mes commandes.,
+T_E8A621D6,2025-08-07 09:15:57,S_20250807_091428,ouais,False,0.0001480579376220703,Je ne suis pas sûr de comprendre. Voici quelques exemples de commandes que vous pouvez essayer.,
+T_E8A621D6,2025-08-07 09:16:10,S_20250807_091428,ouais,False,0.0002052783966064453,Je ne suis pas programmé pour cela. Consultez les commandes prises en charge pour continuer.,
+T_E8A621D6,2025-08-07 09:16:25,S_20250807_091428,ouais je te jure,False,0.00028204917907714844,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",
+T_E8A621D6,2025-08-07 09:16:51,S_20250807_091428,ouais,False,0.0002605915069580078,Cette commande n’est pas disponible. Besoin d’aide ? Dites : 'quelles sont les commandes disponibles'.,
+T_E8A621D6,2025-08-07 09:17:07,S_20250807_091428,ouais,False,0.0007381439208984375,Hmm... cela ne me dit rien. Vous pouvez demander 'aide' pour voir mes commandes.,
+T_E8A621D6,2025-08-07 09:17:28,S_20250807_091428,zombie qui peut faire tour,False,0.0006890296936035156,Je ne suis pas programmé pour cela. Consultez les commandes prises en charge pour continuer.,
+T_E8A621D6,2025-08-07 09:18:15,S_20250807_091428,fais coucou aux autres,True,23.734270811080933,,
+T_E8A621D6,2025-08-07 09:18:35,S_20250807_091428,tu marches comment,True,7.74800705909729,,
+T_E8A621D6,2025-08-07 09:18:58,S_20250807_091428,augmente la luminosité,True,1.0153136253356934,,3
+T_E8A621D6,2025-08-07 09:19:17,S_20250807_091428,diminue la,False,0.0020520687103271484,"Commande inconnue. Pour voir les instructions disponibles, dites simplement 'aide'.",
+T_E8A621D6,2025-08-07 09:19:25,S_20250807_091428,diminue la luminosité,True,0.16999530792236328,,3
+T_E8A621D6,2025-08-07 09:19:34,S_20250807_091428,diminue la luminosité,True,0.17876243591308594,,3
+T_E8A621D6,2025-08-07 09:19:41,S_20250807_091428,augmente la luminosité,True,0.13356995582580566,,3
+T_E8A621D6,2025-08-07 09:20:01,S_20250807_091428,comment tu viens parler brutalement,False,0.00021696090698242188,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",
+T_E8A621D6,2025-08-07 09:20:09,S_20250807_091428,plein écran,True,0.1089785099029541,,1
+T_E8A621D6,2025-08-07 09:20:34,S_20250807_091428,batterie reste,False,0.0006513595581054688,Je ne suis pas programmé pour cela. Consultez les commandes prises en charge pour continuer.,
+T_E8A621D6,2025-08-07 09:20:52,S_20250807_091428,quand on rentre dans la plaine,False,0.0001971721649169922,"Je n'ai pas compris. Pour voir ce que je peux faire, dites par exemple : 'liste des commandes'.",

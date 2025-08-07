@@ -17,3 +17,6 @@ config.py
 # OS-specific junk
 .DS_Store
 Thumbs.db
+
+# the agent
+agent.py

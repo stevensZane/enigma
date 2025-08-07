@@ -1,44 +1,57 @@
+
 import speech_recognition as sr
 
-def listen():
+def listen(preferred_language='fr-FR'):
+    """
+    Écoute de la parole en français et retourne le texte transcrit.
+    
+    Paramètres :
+        preferred_language (str) : Langue à utiliser (par défaut : 'fr-FR')
+    
+    Retourne :
+        str : Le texte transcrit en minuscules
+    """
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
 
     # Configuration
-    recognizer.pause_threshold = 1.0  # Time to wait after user stops talking
-    recognizer.energy_threshold = 300  # Minimum audio energy to consider as speech
-    recognizer.dynamic_energy_threshold = True  # Helps with varying mic sensitivity
+    recognizer.pause_threshold = 0.6
+    recognizer.energy_threshold = 150
+    recognizer.dynamic_energy_threshold = True
+    phrase_time_limit = 8
 
-    print("🔊 Adjusting for ambient noise...")
+
+    print("Calibration du micro (bruit ambiant)...")
     with mic as source:
         recognizer.adjust_for_ambient_noise(source, duration=0.8)
 
-    print("🎤 Start speaking (wait for silence to stop)...")
-    
+    print("Parlez en français... (pause pour arrêter)")
+
     final_text = ""
     is_listening = True
-    
+
     while is_listening:
         try:
             with mic as source:
-                print("👂 Listening...")
+                print("En écoute...")
                 audio = recognizer.listen(source, timeout=2, phrase_time_limit=5)
-                
-                try:
-                    text = recognizer.recognize_google(audio)
-                    print(f"🗣️ You said: {text}")
-                    final_text += " " + text
-                except sr.UnknownValueError:
-                    print("🔇 Silence detected, stopping...")
-                    is_listening = False
-                except sr.RequestError as e:
-                    print(f"🚫 API error: {e}")
-                    is_listening = False
-                    
+
+            try:
+                text = recognizer.recognize_google(audio, language=preferred_language)
+                print(f"Vous avez dit : {text}")
+                final_text += " " + text
+            except sr.UnknownValueError:
+                print("Parole non reconnue ou silence détecté.")
+                is_listening = False
+            except sr.RequestError as e:
+                print(f"Erreur du service de reconnaissance : {e}")
+                is_listening = False
+
         except sr.WaitTimeoutError:
-            print("⏳ No speech detected within timeout period, stopping...")
+            print("Temps d'attente écoulé, arrêt de l'écoute.")
             is_listening = False
-    
-    print("\n🎤 Final transcript:")
-    print(final_text.strip().lower())
-    return final_text.strip().lower()
+
+    final_result = final_text.strip().lower()
+    print("\nTranscription finale :")
+    print(final_result)
+    return final_result

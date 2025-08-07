@@ -2,4 +2,4 @@
 
 from speaker import speak
 
-speak("Bonjour! ça va? ma voix sera changé bientôt")
+speak("Salut! j'suis Enigma!", lang='fr')
